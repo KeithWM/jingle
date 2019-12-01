@@ -1,4 +1,18 @@
 class PrintOutput:
+    ON_CHAR = u'\u2588'
+    OFF_CHAR = '_'
+
+    def __init__(self):
+        pass
+
+    def on(self):
+        print(self.ON_CHAR, end=' ')
+
+    def off(self):
+        print(self.OFF_CHAR, end=' ')
+
+
+class OldPrintOutput:
     WIDTH = 100
     ON_CHAR = u'\u2588'
     OFF_CHAR = '_'

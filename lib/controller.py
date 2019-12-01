@@ -15,17 +15,37 @@ class RollingAverage:
 
 
 class Controller:
+    THRESHOLD = 6
+
     def __init__(self):
-        self.rolling_avg = RollingAverage(1024)
-        self.pattern = [True, False]
+        self.rolling_avg = RollingAverage(256)
+        self.pattern = [True, ]
         self.i_pattern = 0
         self.mode = 'playing'
 
     def decide(self, value):
         self.rolling_avg.update(value)
+        self._decide_mode(value)
         decision = self.pattern[self.i_pattern]
         self.i_pattern = (self.i_pattern + 1) % len(self.pattern)
         return decision
+
+    def _decide_mode(self, value):
+        if self.mode == 'playing' and self._loud_enough(value):
+            print('\nStarted listening')
+            self.mode = 'listening'
+            self.pattern = [True]
+            self.i_pattern = 0
+        if self.mode == 'listening':
+            self.pattern.append(self._loud_enough(value))
+            if self.pattern[-1] and not all(self.pattern):
+                print(f'\nFinished listening')
+                self.mode = 'just_playing'
+        if self.mode == 'just_playing' and self.i_pattern == 100:
+            self.mode = 'playing'
+
+    def _loud_enough(self, value):
+        return value > self.THRESHOLD * self.rolling_avg.value
 
 
 if __name__ == "__main__":
