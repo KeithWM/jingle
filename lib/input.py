@@ -19,5 +19,8 @@ def factory(name, chunk, rate):
     if name == "audio":
         from audio_input import AudioInput
         return AudioInput(chunk, rate)
+    if name == "file":
+        from file_input import FileInput
+        return FileInput(chunk, rate)
     else:
         raise ValueError
