@@ -8,18 +8,19 @@ import controller
 
 
 if __name__ == "__main__":
-    CHUNK = 128
+    CHUNK = 2**10
     RATE = 44100
 
     inp = input.factory('audio', CHUNK, RATE)
-    outp = output.PrintOutput()
+    outp = output.factory('print', CHUNK, RATE)
     ctrl = controller.Controller()
 
-    n_keep = 4000
+    n_keep = 400
     i_keep = 0
     keep = np.zeros((n_keep, 5))
 
     for value in inp.generate_values():
+        outp.callback()
         decision = ctrl.decide(value)
         if decision:
             outp.on()

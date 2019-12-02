@@ -1,9 +1,41 @@
-class PrintOutput:
+from abc import ABCMeta, abstractmethod
+
+
+class Output(metaclass=ABCMeta):
+    @abstractmethod
+    def __init__(self, chunk, rate):
+        self.chunk = chunk
+        self.rate = rate
+
+    @abstractmethod
+    def on(self):
+        pass
+
+    @abstractmethod
+    def off(self):
+        pass
+
+    @abstractmethod
+    def callback(self):
+        pass
+
+
+def factory(name, chunk, rate):
+    if name == "print":
+        return PrintOutput(chunk, rate)
+    if name == "pygame":
+        from pygame_output import PygameOutput
+        return PygameOutput(chunk, rate)
+    else:
+        raise ValueError
+
+
+class PrintOutput(Output):
     ON_CHAR = u'\u2588'
     OFF_CHAR = '_'
 
-    def __init__(self):
-        pass
+    def __init__(self, chunk, rate):
+        super().__init__(chunk, rate)
 
     def on(self):
         print(self.ON_CHAR, end=' ')
@@ -11,20 +43,8 @@ class PrintOutput:
     def off(self):
         print(self.OFF_CHAR, end=' ')
 
-
-class OldPrintOutput:
-    WIDTH = 100
-    ON_CHAR = u'\u2588'
-    OFF_CHAR = '_'
-
-    def __init__(self):
+    def callback(self):
         pass
-
-    def on(self):
-        print(self.ON_CHAR * self.WIDTH)
-
-    def off(self):
-        print(self.OFF_CHAR * self.WIDTH)
 
 
 if __name__ == "__main__":
