@@ -8,14 +8,14 @@ import controller
 
 
 if __name__ == "__main__":
-    CHUNK = 2**10
-    RATE = 44100
+    CHUNK = 2**12
+    RATE = 48000
 
     inp = input.factory('audio', CHUNK, RATE)
-    outp = output.factory('print', CHUNK, RATE)
+    outp = output.factory('pygame', CHUNK, RATE)
     ctrl = controller.Controller()
 
-    n_keep = 400
+    n_keep = 100
     i_keep = 0
     keep = np.zeros((n_keep, 5))
 

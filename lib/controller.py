@@ -40,9 +40,7 @@ class Controller:
             self.pattern.append(self._loud_enough(value))
             if self.pattern[-1] and not all(self.pattern):
                 print(f'\nFinished listening')
-                self.mode = 'just_playing'
-        if self.mode == 'just_playing' and self.i_pattern == 100:
-            self.mode = 'playing'
+                self.mode = 'playing'
 
     def _loud_enough(self, value):
         return value > self.THRESHOLD * self.rolling_avg.value
