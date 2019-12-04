@@ -8,18 +8,25 @@ import controller
 
 
 if __name__ == "__main__":
-    CHUNK = 2**12
+    CHUNK = 2**10
     RATE = 48000
 
-    inp = input.factory('audio', CHUNK, RATE)
     outp = output.factory('pygame', CHUNK, RATE)
+    inp = input.factory('audio', CHUNK, RATE)
     ctrl = controller.Controller()
 
-    n_keep = 100
+    n_keep = 1000
     i_keep = 0
     keep = np.zeros((n_keep, 5))
 
-    for value in inp.generate_values():
+    prev = time.time()
+
+    value_gen = inp.generate_values()
+    # for value in value_gen:
+    while True:
+        print(i_keep, time.time() - prev)
+        value = next(value_gen)
+        prev = time.time()
         outp.callback()
         decision = ctrl.decide(value)
         if decision:

@@ -26,8 +26,29 @@ class PygameOutput(Output):
     def callback(self):
         pygame.display.flip()
         # self.clock.tick(self.fps)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True
+        for _ in pygame.event.get():
+            pass
 
-        # self.screen.fill((0, 0, 0))
+
+if __name__ == "__main__":
+    import numpy as np
+    import time
+    import matplotlib.pyplot as plt
+
+    n_keep = 1000
+    keep = np.zeros(n_keep)
+
+    outp = PygameOutput(2**10, 44800)
+
+    now = time.time()
+    for i in range(n_keep):
+        if np.random.rand() > 0.5:
+            outp.on()
+        else:
+            outp.off()
+
+        now, prev = time.time(), now
+        keep[i] = now - prev
+
+    plt.plot(keep)
+

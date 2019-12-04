@@ -8,17 +8,18 @@ class RollingAverage:
         self.trend_prev = 0
 
     def update(self, value_new):
-        value_new = self.a * value_new + (1 - self.a) * (self.value_prev + self.trend_prev)
-        trend_new = self.b * (value_new - self.value_prev) + (1 - self.b) * self.trend_prev
-        self.value, self.value_prev = value_new, self.value
-        self.trend, self.trend_prev = trend_new, self.trend
+        pass
+        # value_new = self.a * value_new + (1 - self.a) * (self.value_prev + self.trend_prev)
+        # trend_new = self.b * (value_new - self.value_prev) + (1 - self.b) * self.trend_prev
+        # self.value, self.value_prev = value_new, self.value
+        # self.trend, self.trend_prev = trend_new, self.trend
 
 
 class Controller:
-    THRESHOLD = 6
+    THRESHOLD = 2
 
     def __init__(self):
-        self.rolling_avg = RollingAverage(256)
+        self.rolling_avg = RollingAverage(3000)
         self.pattern = [True, ]
         self.i_pattern = 0
         self.mode = 'playing'
@@ -40,7 +41,9 @@ class Controller:
             self.pattern.append(self._loud_enough(value))
             if self.pattern[-1] and not all(self.pattern):
                 print(f'\nFinished listening')
-                self.mode = 'playing'
+                self.mode = 'just_playing'
+        if self.mode == 'just_playing' and self.i_pattern in (0, 10):
+            self.mode = 'playing'
 
     def _loud_enough(self, value):
         return value > self.THRESHOLD * self.rolling_avg.value
