@@ -4,9 +4,6 @@ from output import Output
 
 
 class PygameOutput(Output):
-    ON_CHAR = u'\u2588'
-    OFF_CHAR = '_'
-
     def __init__(self, chunk, rate, width=300, height=300):
         super().__init__(chunk, rate)
         pygame.init()
