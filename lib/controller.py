@@ -29,6 +29,8 @@ class Controller:
     def __init__(self):
         self.rolling_avg = RollingAverage(100)
         self.pattern = [True, ]
+        self.listening_pattern = [True, ]
+        self.new_pattern = []
         self.i_pattern = 0
         self.mode = 'playing'
 
@@ -43,13 +45,15 @@ class Controller:
         if self.mode == 'playing' and self._loud_enough(value):
             print('\nStarted listening')
             self.mode = 'listening'
-            self.pattern = [True]
+            self.pattern = self.listening_pattern
+            self.new_pattern = [True]
             self.i_pattern = 0
         if self.mode == 'listening':
-            self.pattern.append(self._loud_enough(value))
-            if self.pattern[-1] and not all(self.pattern):
+            self.new_pattern.append(self._loud_enough(value))
+            if self.new_pattern[-1] and not all(self.new_pattern):
                 print(f'\nFinished listening')
                 self.mode = 'just_playing'
+                self.pattern = self.new_pattern
         if self.mode == 'just_playing' and self.i_pattern in (0, 10):
             self.mode = 'playing'
 
