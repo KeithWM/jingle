@@ -37,12 +37,15 @@ class OptocouplerOutput(Output):
         self.pinC7 = GpioPin(71)
         for pin in (self.pinC4, self.pinC7):
             pin.export('out')
+        self.is_on = False
 
     def on(self):
-        self.pinC4.set(1)
+        if not self.is_on:
+            self.pinC4.set(1)
 
     def off(self):
-        self.pinC4.set(0)
+        if self.is_on:
+            self.pinC4.set(0)
 
     def callback(self):
         pass
