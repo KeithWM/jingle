@@ -26,6 +26,9 @@ def factory(name, chunk, rate):
     if name == "pygame":
         from pygame_output import PygameOutput
         return PygameOutput(chunk, rate)
+    if name == "optocoupler":
+        from optocoupler_output import OptocouplerOutput
+        return OptocouplerOutput(chunk, rate)
     else:
         raise ValueError
 
