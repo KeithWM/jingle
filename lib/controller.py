@@ -1,9 +1,12 @@
+import numpy as np
+
+
 class RollingAverage:
-    def __init__(self, default, a=.01, b=.1):
+    def __init__(self, default, a=.01, b=0.):
         self.a = a
         self.b = b
         self.value = default
-        self.tf_value_prev = 1 / default
+        self.tf_value_prev = self._transform(default)
         self.trend = 0
         self.trend_prev = 0
 
@@ -11,23 +14,23 @@ class RollingAverage:
         tf_value_new = self._transform(value_new)
         tf_value_new = self.a * tf_value_new + (1 - self.a) * (self.tf_value_prev + self.trend_prev)
         trend_new = self.b * (tf_value_new - self.tf_value_prev) + (1 - self.b) * self.trend_prev
-        self.value, self.tf_value_prev = self._transform(tf_value_new), self._transform(self.value)
+        self.value, self.tf_value_prev = self._inv_transform(tf_value_new), self._transform(self.value)
         self.trend, self.trend_prev = trend_new, self.trend
 
     @staticmethod
     def _transform(x):
-        return 1/x
+        return np.log(abs(x))
 
     @staticmethod
     def _inv_transform(x):
-        return 1/x
+        return np.exp(x)
 
 
 class Controller:
     THRESHOLD = 10
 
     def __init__(self):
-        self.rolling_avg = RollingAverage(100)
+        self.rolling_avg = RollingAverage(300)
         self.pattern = [True, ]
         self.listening_pattern = [True, ]
         self.new_pattern = []

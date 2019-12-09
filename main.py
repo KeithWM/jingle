@@ -33,7 +33,7 @@ if __name__ == "__main__":
             else:
                 outp.off()
             keep[i_keep, 0] = value
-            keep[i_keep, 1] = ctrl.rolling_avg.value * ctrl.THRESHOLD
+            keep[i_keep, 1] = ctrl.rolling_avg.value
             keep[i_keep, 2] = decision
             keep[i_keep, 3] = ctrl.mode == 'listening'
             keep[i_keep, 4] = -int(ctrl.mode == 'playing')
