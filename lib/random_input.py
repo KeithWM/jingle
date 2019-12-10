@@ -1,11 +1,6 @@
-import pandas as pd
-import os.path as op
 import random
 
 from input import Input
-
-# df = pd.DataFrame(keep)
-# pd.to_numeric(df[0], downcast='integer').to_csv('lib/typical.csv', header=True)
 
 
 class RandomInput(Input):
