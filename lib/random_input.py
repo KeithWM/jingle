@@ -8,5 +8,5 @@ class RandomInput(Input):
         super().__init__()
 
     def listen(self):
-        value = 200 if random.random() < .99 else 3000
+        value = 200 if random.random() < .999 else 3000
         return value

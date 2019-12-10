@@ -27,6 +27,7 @@ my orange pi one.
         return cp.stdout == b'1\n'
 
     def set(self, val):
+        print('echo %d > %s/value' % (int(val), self.exported_name))
         run('echo %d > %s/value' % (int(val), self.exported_name), shell=True, stdout=PIPE)
 
 
@@ -41,10 +42,12 @@ class OptocouplerOutput(Output):
 
     def on(self):
         if not self.is_on:
+            self.is_on = True
             self.pinC4.set(1)
 
     def off(self):
         if self.is_on:
+            self.is_on = False
             self.pinC4.set(0)
 
     def callback(self):
