@@ -19,7 +19,7 @@ if __name__ == "__main__":
     i_keep = 0
     keep = np.zeros((n_keep, 5))
 
-    inp = input.factory('audio', CHUNK, RATE)
+    inp = input.factory('random', CHUNK, RATE)
     value_gen = inp.generate_values()
     # for value in value_gen:
     try:

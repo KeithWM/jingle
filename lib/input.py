@@ -22,5 +22,8 @@ def factory(name, chunk, rate):
     if name == "file":
         from file_input import FileInput
         return FileInput(chunk, rate)
+    if name == "random":
+        from random_input import RandomInput
+        return RandomInput(chunk, rate)
     else:
         raise ValueError
