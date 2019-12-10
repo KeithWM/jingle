@@ -1,4 +1,4 @@
-import numpy as np
+import math
 
 
 class RollingAverage:
@@ -19,11 +19,11 @@ class RollingAverage:
 
     @staticmethod
     def _transform(x):
-        return np.log(abs(x))
+        return math.log(abs(x))
 
     @staticmethod
     def _inv_transform(x):
-        return np.exp(x)
+        return math.exp(x)
 
 
 class Controller:
