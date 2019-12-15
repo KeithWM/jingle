@@ -15,8 +15,10 @@ class Output(metaclass=ABCMeta):
     def off(self):
         pass
 
-    @abstractmethod
     def callback(self):
+        pass
+
+    def close(self):
         pass
 
 
