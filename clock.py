@@ -6,7 +6,7 @@ import morse
 
 
 def get_time():
-    return time.strftime('%H%m')
+    return time.strftime('%H%M')
 
 
 if __name__ == "__main__":

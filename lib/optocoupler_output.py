@@ -53,6 +53,10 @@ class OptocouplerOutput(Output):
     def callback(self):
         pass
 
+    def close(self):
+        self.is_on = True  # to be sure, to be sure
+        self.off()
+
 
 if __name__ == "__main__":
     pass
