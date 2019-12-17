@@ -30,8 +30,25 @@ def flip(path):
 
 def find_path(k0, k1):
     print(k0, k1)
+    # even - one
+    if k0 % 2 == 0 and k1 == 1:
+        return flip(find_path(k1, k0))
+    # one - even
+    if k0 == 1 and k1 % 2 == 0:
+        js = [-j % (k1 + 1) for j in range(k1 + 1)]
+        return [[1, ] * j + [0, ] + [1, ] * (k1 - j) for j in js]
+
+    # odd - one
+    if k0 % 2 == 1 and k1 == 1:
+        return flip(find_path(k1, k0))
+    # one - odd
+    if k0 == 1 and k1 % 2 == 1:
+        return [[1, ] * (k1 - j) + [0, ] + [1, ] * j for j in range(k1 + 1)]
+
+    # even - odd
     if k0 % 2 == 0 and k1 % 2 == 1:
         return flip(find_path(k1, k0))
+    # odd - even
     if k0 % 2 == 1 and k1 % 2 == 0:
         path_0 = find_path(k0, k1 - 1)
         path_1 = find_path(k0 - 1, k1)
@@ -41,7 +58,17 @@ def find_path(k0, k1):
         d = swap_last_bit(b)
         e = swap_last_bit(c)
         return app(path_0[:-1], 1) + app(roundabout(path_1, d, e), 0) + app(path_0[-1:], 1)
-    # if k0 % 2 == 1 and k1 % 1 == 0:
+    if k0 % 2 == 0 and k1 % 2 == 0:
+        path_0 = find_path(k0, k1 - 1)
+        path_1 = find_path(k0 - 1, k1)
+        a = path_0[0]
+        b = path_0[1]
+        c = path_0[-1]
+        d = path_1[0]
+        e = path_1[-2]
+        f = path_1[-1]
+        return app(path_0, 1) + app(path_1, 0)
+
     if k0 == 2 and k1 == 2:
         return [[0, 0, 1, 1],
                 [0, 1, 1, 0],
@@ -54,22 +81,12 @@ def find_path(k0, k1):
                 [0, 0, 1, 0],
                 [0, 1, 0, 0],
                 [1, 0, 0, 0]]
-    # if k0 == 2 and k1 == 3:
-    #     return [[0, 0, 1, 1, 1],
-    #             [1, 0, 0, 1, 1],
-    #             [0, 1, 0, 1, 1],
-    #             [0, 1, 1, 0, 1],
-    #             [0, 1, 1, 1, 0],
-    #             [1, 0, 1, 0, 1],
-    #             [1, 0, 1, 1, 0],
-    #             [1, 1, 0, 0, 1],
-    #             [1, 1, 0, 1, 0],
-    #             [1, 1, 1, 0, 0]]
 
 
-def test_path(path):
-    for i, a in enumerate(path[:-1]):
-        b = path[i+1]
+def test_path_or_cycle(path, cycle=False):
+    i_start = 0 if cycle else 1
+    for i, a in enumerate(path[i_start:]):
+        b = path[i-1]
         assert all(aa in (0, 1) for aa in a)
         assert all(bb in (0, 1) for bb in b)
         assert sum(aa - bb == 1 for (aa, bb) in zip(a, b)) == 1
@@ -78,6 +95,6 @@ def test_path(path):
         assert all(s == sums[0] for s in sums)
 
 
-test_path(find_path(2, 2))
-test_path(find_path(3, 1))
-test_path(find_path(3, 2))
+# test_path_or_cycle(find_path(2, 2), cycle=True)
+# test_path_or_cycle(find_path(3, 1))
+test_path_or_cycle(find_path(3, 2))
